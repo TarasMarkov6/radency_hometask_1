@@ -118,6 +118,28 @@ const notes = {
 			block.querySelector ("div").textContent = filtred.length;
 		});
 	},
+	addNotesByHand (id,name,content,category,date,isActive) {
+		const note = new Note(name,category,content);
+		note.id = id;
+		note.isActive = isActive;
+		note.date = date;
+
+		this[id] = note;
+
+		const showNote = new ShowNote (true);
+		this[id].block = showNote.render (note.name,note.category,note.content,note.date,note.dates,note.id);
+		if (isActive == true) {
+			this[id].block.querySelector("[alt='archivate']").hidden = false;
+			this[id].block.querySelector("[alt='extract']").hidden = true;
+		} else {
+			this[id].block.querySelector("[alt='archivate']").hidden = true;
+			this[id].block.querySelector("[alt='extract']").hidden = false;			
+		}
+
+		this.hideArchivatedNotes ();
+		this.changeArchivatedVisibilityStatus ();
+		this.setSummaryValues ();
+	},
 	changeNoteStatus (id) {
 		this[id].isActive = !this[id].isActive;
 	},
@@ -309,3 +331,11 @@ createNoteBtn.addEventListener ("click", function () {
 	noteWindow.showCreatNoteWindow (true);
 	this.style.pointerEvents = "none";
 });
+
+notes.addNotesByHand ("10000","Покупки","Хліб, молоко, цукор","Task","July 20,2023",false);
+notes.addNotesByHand ("10001","Важлива дата","День народження похресниці 14/02/2024","Random Thought","July 22,2023",true);
+notes.addNotesByHand ("10002","Покупки","Морозиво, цукерки","Task","July 22,2023",false);
+notes.addNotesByHand ("10003","Квадрат суми чисел","Квадрат суми чисел є частковим випадком біному Ньютона","Idea","July 24,2023",true);
+notes.addNotesByHand ("10004","Альберт Ейнштейн","Прагніть не до успіху, а до цінностей, які він дає","Quote","July 25,2023",true);
+notes.addNotesByHand ("10005","Стів Джобс","Єдиний спосіб робити свою роботу добре — це любити її.","Quote","July 26,2023",true);
+notes.addNotesByHand ("10006","Покупки","Сірники, порошок для прання","Task","July 26,2023",false);
