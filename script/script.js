@@ -9,6 +9,8 @@ const notes = {
 		this.deleteNoteHandler ();
 		this.deleteAllNotesHandler ();
 		this.archivateExtractNoteHandler ();
+		this.showHideArchivatedNotesHandler ();
+		this.editNote ();
 		this.setSummaryValues ();
 		this.contentWindowHandler ();
 	},
@@ -54,6 +56,43 @@ const notes = {
 				} else elem.style.display = "block";
 				
 				this.setSummaryValues ();
+			}
+		})
+	},
+	showHideArchivatedNotesHandler () {
+		document.addEventListener("click",(e)=>{
+			if (e.target.parentElement.classList.contains ("title_archivate_icon")) {
+				if (!this.isArchivateNotesVisible) {
+					this.showArchivatedNotes ();
+				} else {
+					this.hideArchivatedNotes ();
+				}
+			}
+		})
+	},
+	showArchivatedNotes () {
+		for (let key in this) {
+			if (typeof this[key] != "function" && !this[key].isActive && key != "isArchivateNotesVisible") {
+				this[key].block.style.display = "block";
+			}
+		}
+		this.changeArchivatedVisibilityStatus ();
+	},
+	hideArchivatedNotes () {
+		for (let key in this) {
+			if (typeof this[key] != "function" && !this[key].isActive && key != "isArchivateNotesVisible") {
+				this[key].block.style.display = "none";
+			}
+		}
+		this.changeArchivatedVisibilityStatus ();
+	},
+	editNote () {
+		document.addEventListener("click",(e)=>{
+			if (e.target.parentElement.classList.contains ("edit_icon")) {
+				const elem = e.target.closest (".noteShell");
+				const nameBlock = elem.querySelector (".second > div")
+				const id = elem.id;
+				noteWindow.showCreatNoteWindow (false,id,elem);
 			}
 		})
 	},
